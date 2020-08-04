@@ -1,0 +1,9 @@
+transformers==2.1.1
+torch
+numpy
+tqdm
+sklearn
+tensorflow==2.2.0
+tb-nightly
+future
+thulac
