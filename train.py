@@ -67,6 +67,7 @@ def main():
     parser.add_argument('--bpe_token', action='store_true', help='subword')
     parser.add_argument('--encoder_json', default="tokenizations/encoder.json", type=str, help="encoder.json")
     parser.add_argument('--vocab_bpe', default="tokenizations/vocab.bpe", type=str, help="vocab.bpe")
+    parser.add_argument('--tensorflow_path', default='', type=str, help='是否为tensorflow checkpoint')
 
     args = parser.parse_args()
     print('args:\n' + args.__repr__())
@@ -106,6 +107,7 @@ def main():
     num_pieces = args.num_pieces
     min_length = args.min_length
     output_dir = args.output_dir
+    tf_path = args.tensorflow_path
     tb_writer = SummaryWriter(log_dir=args.writer_dir)
     assert log_step % gradient_accumulation == 0
 
@@ -120,6 +122,9 @@ def main():
 
     if not args.pretrained_model:
         model = transformers.modeling_gpt2.GPT2LMHeadModel(config=model_config)
+        if tf_path:
+            print("Found tensorflow ckpt")
+            model = transformers.modeling_gpt2.GPT2LMHeadModel.load_tf_weights(model, model_config, tf_path)
     else:
         model = transformers.modeling_gpt2.GPT2LMHeadModel.from_pretrained(args.pretrained_model)
     model.train()
