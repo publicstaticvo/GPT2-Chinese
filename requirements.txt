@@ -2,7 +2,8 @@ torch
 numpy
 tqdm
 sklearn
-tensorflow==2.2.0
+tensorflow
+transformers==2.1.1
 tb-nightly
 future
 thulac
